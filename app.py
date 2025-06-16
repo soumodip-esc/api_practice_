@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect ,request ,session, url_for  
+from flask import Flask, jsonify, redirect, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -19,7 +19,15 @@ load_dotenv()
 app = Flask(__name__)
 
 # CORRECT ORDER
-CORS(app, origins=["https://music-recommender-app.vercel.app", "http://localhost:5173", "http://192.168.29.8:5173/"], supports_credentials=True)
+CORS(
+    app,
+    origins=[
+        "https://music-recommender-app.vercel.app",
+        "http://localhost:5173",
+        "http://192.168.29.8:5173/",
+    ],
+    supports_credentials=True,
+)
 
 # THEN register blueprints
 app.register_blueprint(spotify)
@@ -34,13 +42,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 
-#API KEY
-app.secret_key = os.getenv("FLASK_SECRET_KEY") 
+# API KEY
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 # Add just below app.secret_key
-app.config.update(
-    SESSION_COOKIE_SAMESITE='None',
-    SESSION_COOKIE_SECURE=True
-)
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
 
 # Initialize Database
@@ -49,7 +54,8 @@ db = SQLAlchemy(app)
 
 # Define Music Table Model
 class Music(db.Model):
-    __tablename__ = "music_table"
+    __tablename__ = "music_recommendations"
+    __table_args__ = {'schema': 'public'} 
 
     id = db.Column(db.Integer, primary_key=True)
     sad_music = db.Column(db.String(100))
@@ -119,6 +125,7 @@ def get_songs():
 # Route to fetch songs by genre
 from flask import request, url_for
 
+
 @app.route("/songs/<genre>", methods=["GET"])
 def get_songs_by_genre(genre):
     allowed_genres = [
@@ -173,21 +180,34 @@ def get_songs_by_genre(genre):
 
     # Create full URLs for next and previous
     base_url = request.base_url
-    next_url = f"{base_url}?offset={next_offset}&limit={limit}" if next_offset < total_items else None
+    next_url = (
+        f"{base_url}?offset={next_offset}&limit={limit}"
+        if next_offset < total_items
+        else None
+    )
     prev_url = f"{base_url}?offset={prev_offset}&limit={limit}" if offset > 0 else None
 
-    return jsonify({
-        "results": results,
-        "next_offset": next_offset,
-        "total_items": total_items,
-        "has_more": next_offset < total_items,
-        "length": len(results),
-        "next": next_url,
-        "prev": prev_url
-    })
-
+    return jsonify(
+        {
+            "results": results,
+            "next_offset": next_offset,
+            "total_items": total_items,
+            "has_more": next_offset < total_items,
+            "length": len(results),
+            "next": next_url,
+            "prev": prev_url,
+        }
+    )
 
 # Run the Flask app
 if __name__ == "__main__":
     print("Flask app is starting...")
-    app.run(debug=True)  
+    app.run(debug=True)
+
+@app.route("/test-db")
+def test_db():
+    try:
+        count = Music.query.count()
+        return f"✅ Database connected! Found {count} records in music_recommendations table."
+    except Exception as e:
+        return f"❌ Database error: {str(e)}"
