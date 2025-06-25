@@ -50,7 +50,7 @@ class MusicNLPProcessor:
     
         'focus': [
         'study', 'work', 'concentrate', 'focus', 'productivity', 'background','studying', 'working', 'office', 'homework', 'exam', 'concentration',
-        'reading', 'writing', 'coding', 'programming', 'task', 'project', 'deep work']
+        'reading', 'writing', 'coding', 'programming', 'task', 'project', 'deep work', 'workout']
         }
         
         # Activity context mapping
