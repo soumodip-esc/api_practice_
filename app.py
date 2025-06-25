@@ -4,13 +4,14 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from urllib.parse import urlencode
 from spotify import spotify  # This imports the blueprint
+from nlp_processor import MusicNLPProcessor
 import os
 import time
 import requests
+import random
 
-# You MUST set supports_credentials=True
-# CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
-
+# Initialize NLP processor
+nlp_processor = MusicNLPProcessor()
 
 # Load environment variables
 load_dotenv()
@@ -198,6 +199,96 @@ def get_songs_by_genre(genre):
             "prev": prev_url,
         }
     )
+
+@app.route("/chat", methods=["POST"])
+def chat_endpoint():
+    """NLP-powered music recommendation chat endpoint"""
+    try:
+        data = request.get_json()
+        user_message = data.get('message', '')
+        
+        if not user_message:
+            return jsonify({'error': 'Message is required'}), 400
+        
+        # Process user message with NLP
+        analysis = nlp_processor.process_user_message(user_message)
+        
+        # Generate conversational response
+        response = nlp_processor.generate_response(analysis, user_message)
+        
+        # Get actual songs from database based on recommended genres
+        recommended_songs = []
+        for genre in response['genres']:
+            # Query your database for songs in this genre
+            genre_column = getattr(Music, genre, None)
+            if genre_column:
+                songs = Music.query.with_entities(genre_column).filter(
+                    genre_column.isnot(None)
+                ).limit(5).all()
+                
+                genre_songs = [song[0] for song in songs if song[0]]
+                recommended_songs.extend(genre_songs)
+        
+        # Remove duplicates and limit results
+        unique_songs = list(set(recommended_songs))
+        
+        return jsonify({
+            'bot_message': response['message'],
+            'recommended_songs': unique_songs[:10],  # Top 10 recommendations
+            'genres': response['genres'],
+            'follow_up': response.get('follow_up', ''),
+            'analysis': {
+                'emotions': analysis['emotions'],
+                'activities': analysis['activities'],
+                'confidence': analysis['confidence']
+            }
+        })
+    
+    except Exception as e:
+        return jsonify({'error': f'Chat processing failed: {str(e)}'}), 500
+
+
+# Alternative endpoint for getting songs by emotion/mood
+@app.route("/songs/by-mood", methods=["POST"])
+def get_songs_by_mood():
+    """Get songs based on mood/emotion analysis"""
+    try:
+        data = request.get_json()
+        mood_text = data.get('mood', '')
+        limit = data.get('limit', 10)
+        
+        if not mood_text:
+            return jsonify({'error': 'Mood text is required'}), 400
+        
+        # Process mood with NLP
+        analysis = nlp_processor.process_user_message(mood_text)
+        genres = analysis['recommended_genres']
+        
+        # Get songs from recommended genres
+        all_songs = []
+        for genre in genres:
+            genre_column = getattr(Music, genre, None)
+            if genre_column:
+                songs = Music.query.with_entities(genre_column).filter(
+                    genre_column.isnot(None)
+                ).limit(limit // len(genres) + 2).all()
+                
+                genre_songs = [song[0] for song in songs if song[0]]
+                all_songs.extend(genre_songs)
+        
+        # Remove duplicates and shuffle
+        unique_songs = list(set(all_songs))
+        random.shuffle(unique_songs)
+        
+        return jsonify({
+            'songs': unique_songs[:limit],
+            'detected_emotions': analysis['emotions'],
+            'confidence': analysis['confidence'],
+            'recommended_genres': genres
+        })
+    
+    except Exception as e:
+        return jsonify({'error': f'Mood analysis failed: {str(e)}'}), 500
 
 # Run the Flask app
 if __name__ == "__main__":
