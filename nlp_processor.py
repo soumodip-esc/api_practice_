@@ -20,36 +20,30 @@ class MusicNLPProcessor:
             'focus': ['focus_music', 'instrumental_music', 'classical_music']
         }
         
+        
         # Fixed: Removed duplicate 'romantic' key and improved keyword patterns
         self.emotion_keywords = {
-            'sad': [
-        'sad', 'depressed', 'down', 'blue', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt','low', 'awful', 'terrible', 'bad', 'miserable', 'gloomy', 'devastated', 'broken',
+            'sad': ['sad', 'depressed', 'down', 'blue', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt','low', 'awful', 'terrible', 'bad', 'miserable', 'gloomy', 'devastated', 'broken',
         'disappointed', 'hopeless', 'grief', 'sorrow', 'despair', 'melancholic' ],
     
-        'happy': [
-        'happy', 'joyful', 'excited', 'cheerful', 'glad', 'upbeat', 'positive', 'elated','thrilled', 'ecstatic', 'fantastic', 'wonderful', 'amazing', 'great', 'awesome',
+        'happy': ['happy', 'joyful', 'excited', 'cheerful', 'glad', 'upbeat', 'positive', 'elated','thrilled', 'ecstatic', 'fantastic', 'wonderful', 'amazing', 'great', 'awesome',
         'excellent', 'delighted', 'overjoyed', 'euphoric', 'blissful'],
     
-        'energetic': [
-        'energetic', 'pumped', 'hyped', 'active', 'workout', 'gym', 'running', 'dance','exercise', 'fitness', 'cardio', 'training', 'intense', 'powerful', 'strong',
+        'energetic': ['energetic', 'pumped', 'hyped', 'active', 'workout', 'gym', 'running', 'dance','exercise', 'fitness', 'cardio', 'training', 'intense', 'powerful', 'strong',
         'adrenaline', 'boost', 'motivation', 'energy', 'pump', 'beast mode', 'sweat',
         'lift', 'weights', 'crossfit', 'hiit', 'run', 'jog', 'sprint'],
     
-        'romantic': [
-        'love', 'romantic', 'date', 'crush', 'valentine', 'intimate','romance', 'affection', 'passion', 'relationship', 'boyfriend', 'girlfriend',
+        'romantic': ['love', 'romantic', 'date', 'crush', 'valentine', 'intimate','romance', 'affection', 'passion', 'relationship', 'boyfriend', 'girlfriend',
         'husband', 'wife', 'partner', 'soulmate', 'sweetheart', 'darling', 'beloved',
         'dinner', 'anniversary', 'proposal', 'wedding', 'honeymoon'],
     
-        'relaxed': [
-        'chill', 'relax', 'calm', 'peaceful', 'studying', 'meditation', 'zen', 'quiet','tranquil', 'serene', 'mellow', 'soothing', 'unwind', 'decompress', 'breathe',
+        'relaxed': ['chill', 'relax', 'calm', 'peaceful', 'studying', 'meditation', 'zen', 'quiet','tranquil', 'serene', 'mellow', 'soothing', 'unwind', 'decompress', 'breathe',
         'mindful', 'spa', 'massage', 'ambient', 'soft', 'gentle', 'laid back'],
     
-        'party': [
-        'party', 'club', 'dancing', 'celebration', 'fun', 'wild', 'night out','dance', 'nightclub', 'disco', 'rave', 'festival', 'concert', 'dj',
+        'party': ['party', 'club', 'dancing', 'celebration', 'fun', 'wild', 'night out','dance', 'nightclub', 'disco', 'rave', 'festival', 'concert', 'dj',
         'bass', 'beat', 'groove', 'vibe', 'turn up', 'lit', 'banging', 'banger'],
     
-        'focus': [
-        'study', 'work', 'concentrate', 'focus', 'productivity', 'background','studying', 'working', 'office', 'homework', 'exam', 'concentration',
+        'focus': ['study', 'work', 'concentrate', 'focus', 'productivity', 'background','studying', 'working', 'office', 'homework', 'exam', 'concentration',
         'reading', 'writing', 'coding', 'programming', 'task', 'project', 'deep work', 'workout']
         }
         
