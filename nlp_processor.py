@@ -22,16 +22,35 @@ class MusicNLPProcessor:
         
         # Fixed: Removed duplicate 'romantic' key and improved keyword patterns
         self.emotion_keywords = {
-            'sad': ['sad', 'depressed', 'down', 'blue', 'low', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt'],
-            'happy': ['happy', 'joyful', 'excited', 'cheerful', 'glad', 'upbeat', 'positive', 'elated', 'thrilled'],
-            'romantic': ['love', 'romantic', 'date', 'crush', 'valentine', 'intimate', 'affection', 'romance'],
-            'energetic': ['energetic', 'pumped', 'hyped', 'active', 'workout', 'gym', 'running', 'dance', 'intense'],
-            'relaxed': ['chill', 'relax', 'calm', 'peaceful', 'studying', 'meditation', 'zen', 'quiet', 'tranquil'],
-            'nostalgic': ['nostalgic', 'memories', 'past', 'old times', 'remember', 'childhood', 'throwback'],
-            'motivated': ['motivated', 'inspired', 'determined', 'confident', 'strong', 'powerful', 'ambitious'],
-            'party': ['party', 'club', 'dancing', 'celebration', 'fun', 'wild', 'night out', 'festive'],
-            'melancholy': ['melancholy', 'bittersweet', 'wistful', 'pensive', 'thoughtful', 'introspective'],
-            'focus': ['study', 'work', 'concentrate', 'focus', 'productivity', 'background', 'concentration']
+            'sad': [
+        'sad', 'depressed', 'down', 'blue', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt','low', 'awful', 'terrible', 'bad', 'miserable', 'gloomy', 'devastated', 'broken',
+        'disappointed', 'hopeless', 'grief', 'sorrow', 'despair', 'melancholic' ],
+    
+        'happy': [
+        'happy', 'joyful', 'excited', 'cheerful', 'glad', 'upbeat', 'positive', 'elated','thrilled', 'ecstatic', 'fantastic', 'wonderful', 'amazing', 'great', 'awesome',
+        'excellent', 'delighted', 'overjoyed', 'euphoric', 'blissful'],
+    
+        'energetic': [
+        'energetic', 'pumped', 'hyped', 'active', 'workout', 'gym', 'running', 'dance','exercise', 'fitness', 'cardio', 'training', 'intense', 'powerful', 'strong',
+        'adrenaline', 'boost', 'motivation', 'energy', 'pump', 'beast mode', 'sweat',
+        'lift', 'weights', 'crossfit', 'hiit', 'run', 'jog', 'sprint'],
+    
+        'romantic': [
+        'love', 'romantic', 'date', 'crush', 'valentine', 'intimate','romance', 'affection', 'passion', 'relationship', 'boyfriend', 'girlfriend',
+        'husband', 'wife', 'partner', 'soulmate', 'sweetheart', 'darling', 'beloved',
+        'dinner', 'anniversary', 'proposal', 'wedding', 'honeymoon'],
+    
+        'relaxed': [
+        'chill', 'relax', 'calm', 'peaceful', 'studying', 'meditation', 'zen', 'quiet','tranquil', 'serene', 'mellow', 'soothing', 'unwind', 'decompress', 'breathe',
+        'mindful', 'spa', 'massage', 'ambient', 'soft', 'gentle', 'laid back'],
+    
+        'party': [
+        'party', 'club', 'dancing', 'celebration', 'fun', 'wild', 'night out','dance', 'nightclub', 'disco', 'rave', 'festival', 'concert', 'dj',
+        'bass', 'beat', 'groove', 'vibe', 'turn up', 'lit', 'banging', 'banger'],
+    
+        'focus': [
+        'study', 'work', 'concentrate', 'focus', 'productivity', 'background','studying', 'working', 'office', 'homework', 'exam', 'concentration',
+        'reading', 'writing', 'coding', 'programming', 'task', 'project', 'deep work']
         }
         
         # Activity context mapping
