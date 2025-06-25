@@ -22,7 +22,7 @@ class MusicNLPProcessor:
         
         # Fixed: Removed duplicate 'romantic' key and improved keyword patterns
         self.emotion_keywords = {
-            'sad': ['sad', 'depressed', 'down', 'blue', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt', 'grief'],
+            'sad': ['sad', 'depressed', 'down', 'blue', 'low', 'crying', 'heartbroken', 'lonely', 'upset', 'hurt'],
             'happy': ['happy', 'joyful', 'excited', 'cheerful', 'glad', 'upbeat', 'positive', 'elated', 'thrilled'],
             'romantic': ['love', 'romantic', 'date', 'crush', 'valentine', 'intimate', 'affection', 'romance'],
             'energetic': ['energetic', 'pumped', 'hyped', 'active', 'workout', 'gym', 'running', 'dance', 'intense'],
